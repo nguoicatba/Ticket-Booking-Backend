@@ -3,8 +3,10 @@
 use App\Http\Controllers\Admin\EventStatusController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EventTimeController;
 use App\Http\Controllers\TicketStatusController;
 use App\Models\Category;
+use App\Models\EventTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +23,8 @@ Route::get('/', function () {
 Route::apiResources([
     'category' => CategoryController::class,
     'event_status' => EventStatusController::class,
-    'ticket_status' => TicketStatusController::class
+    'ticket_status' => TicketStatusController::class,
+    'event-times' => EventTimeController::class
 ]);
 
 Route::get('/register', [AuthController::class, 'register']);

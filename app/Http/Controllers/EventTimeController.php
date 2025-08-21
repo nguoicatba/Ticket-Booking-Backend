@@ -7,43 +7,45 @@ use Illuminate\Http\Request;
 
 class EventTimeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return EventTime::with('event')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+            'description' => 'nullable|string|max:255',
+            'event_id'   => 'required|exists:events,id',
+        ]);
+
+        $eventTime = EventTime::create($validated);
+        return response()->json($eventTime, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(EventTime $eventTime)
     {
-        //
+        return $eventTime->load('event');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, EventTime $eventTime)
     {
-        //
+        $validated = $request->validate([
+            'start_date' => 'sometimes|date',
+            'end_date'   => 'sometimes|date|after_or_equal:start_date',
+            'description' => 'nullable|string|max:255',
+            'event_id'   => 'sometimes|exists:events,id',
+        ]);
+
+        $eventTime->update($validated);
+        return response()->json($eventTime);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(EventTime $eventTime)
     {
-        //
+        $eventTime->delete();
+        return response()->json(null, 204);
     }
 }
