@@ -10,13 +10,17 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
 
-        return Category::all();
+        $query = Category::query();
+        $result = $request->get('result', 10);
+        $page = $request->get('page', 1);
+        $data = $query->paginate($result, ['*'], 'page', $page);
 
-
+        return response()->json([
+            'results' => $data->items(),
+        ]);
     }
 
     /**
@@ -58,7 +62,6 @@ class CategoryController extends Controller
 
         $category = Category::update($request->only('name', 'slug'));
         return response()->json($category, 201);
-
     }
 
     /**

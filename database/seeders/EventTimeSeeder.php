@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\EventTime;
 
 class EventTimeSeeder extends Seeder
 {
@@ -13,5 +14,6 @@ class EventTimeSeeder extends Seeder
     public function run(): void
     {
         //
+        EventTime::factory()->count(10)->create();
     }
 }
